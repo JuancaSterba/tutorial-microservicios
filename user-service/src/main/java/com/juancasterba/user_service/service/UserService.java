@@ -68,13 +68,13 @@ public class UserService {
             userAndVehicles.put("user", user);
         }
         List<Car> cars = carFeignClient.getCars(userId);
-        if (cars.isEmpty()) {
+        if (cars == null || cars.isEmpty()) {
             userAndVehicles.put("cars", "No cars found");
         } else {
             userAndVehicles.put("cars", cars);
         }
-        List<Bike> bikes = getBikes(userId);
-        if (bikes.isEmpty()) {
+        List<Bike> bikes = bikeFeignClient.getBikes(userId);
+        if (bikes == null || bikes.isEmpty()) {
             userAndVehicles.put("bikes", "No bikes found");
         } else {
             userAndVehicles.put("bikes", bikes);
