@@ -7,6 +7,6 @@ spring:
     config:
       server:
         git:
-          default-label: config-server
+          default-label: eureka
           uri: https://github.com/JuancaSterba/tutorial-microservicios
           search-paths: config-data
