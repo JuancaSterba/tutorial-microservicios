@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,13 +60,26 @@ public class UserService {
     }
 
     public Map<String, Object> getUserAndVehicles(int userId) {
+        Map<String, Object> userAndVehicles = new HashMap<>();
         User user = getUserById(userId);
         if (user == null) {
             return null;
+        } else {
+            userAndVehicles.put("user", user);
         }
         List<Car> cars = carFeignClient.getCars(userId);
-        List<Bike> bikes = bikeFeignClient.getBikes(userId);
-        return Map.of("user", user, "cars", cars, "bikes", bikes);
+        if (cars.isEmpty()) {
+            userAndVehicles.put("cars", "No cars found");
+        } else {
+            userAndVehicles.put("cars", cars);
+        }
+        List<Bike> bikes = getBikes(userId);
+        if (bikes.isEmpty()) {
+            userAndVehicles.put("bikes", "No bikes found");
+        } else {
+            userAndVehicles.put("bikes", bikes);
+        }
+        return userAndVehicles;
     }
 
 }
